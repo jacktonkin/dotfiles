@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# MacVim: use tabs.
+alias mvim='mvim --remote-tab-silent'
+alias mview='command mvim -R --servername VIEW --remote-tab-silent'
+
+# Quicklook: by @ttscoff?
+alias quicklook='qlmanage -p'
+
+# Open current path in Finder
+alias f='open -a Finder ./'
+
 # Easier navigation: .., ..., ...., ....., ~ and -
 alias ..="cd .."
 alias ...="cd ../.."
@@ -161,3 +171,8 @@ alias reload="exec $SHELL -l"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+
+# Quick way to rebuild the Launch Services database and get rid of duplicates in
+# the 'Open With' submenu.
+# http://www.leancrew.com/all-this/2013/02/getting-rid-of-open-with-duplicates/
+alias fixopenwith='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user'
