@@ -118,9 +118,17 @@
 [color "diff"]
 
 	meta = yellow bold
+	commit = blue
 	frag = magenta bold # line info
 	old = red # deletions
 	new = green # additions
+
+[color "diff-highlight"]
+
+	oldNormal = red
+	oldHighlight = red ul
+	newNormal = green
+	newHighlight = green ul
 
 [color "status"]
 
@@ -140,6 +148,11 @@
 
 	# Use `hexdump` to diff binary files
 	textconv = hexdump -v -C
+
+[diff-so-fancy]
+
+	stripLeadingSymbols = false
+	markEmptyLines = false
 
 [help]
 
