@@ -14,6 +14,7 @@ fi;
 prompt_git() {
 	local s='';
 	local branchName='';
+	local p='';
 
 	# Check if the current directory is in a Git repository.
 	if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
@@ -44,6 +45,12 @@ prompt_git() {
 				s+='$';
 			fi;
 
+			# Show status in relation to upstream, sets the local variable p.
+			# Taken from git's example prompt, see /usr/local/etc/bash-completion.d/git-prompt.sh
+			local pcmode='no';
+			local GIT_PS1_SHOWUPSTREAM="verbose name git";
+			__git_ps1_show_upstream
+
 		fi;
 
 		# Get the short symbolic ref.
@@ -54,8 +61,9 @@ prompt_git() {
 			echo '(unknown)')";
 
 		[ -n "${s}" ] && s=" [${s}]";
+		[ -n "${p}" ] && p=" ${p# u}";
 
-		echo -e "${1}${branchName}${2}${s}";
+		echo -e "${1}${branchName}${2}${s}${3}${p}";
 	else
 		return;
 	fi;
@@ -113,7 +121,7 @@ PS1+="\[${white}\] at ";
 PS1+="\[${hostStyle}\]\h"; # host
 PS1+="\[${white}\] in ";
 PS1+="\[${green}\]\w"; # working directory full path
-PS1+="\$(prompt_git \"\[${white}\] on \[${violet}\]\" \"\[${blue}\]\")"; # Git repository details
+PS1+="\$(prompt_git \"\[${white}\] on \[${violet}\]\" \"\[${blue}\]\" \"\[${reset}\]\")"; # Git repository details
 PS1+="\n";
 PS1+="\[${white}\]\$ \[${reset}\]"; # `$` (and reset color)
 export PS1;
