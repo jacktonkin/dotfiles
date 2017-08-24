@@ -15,6 +15,8 @@ prompt_git() {
 	local s='';
 	local branchName='';
 	local p='';
+	local pcmode='no';
+	local GIT_PS1_SHOWUPSTREAM="verbose name git";
 
 	# Check if the current directory is in a Git repository.
 	if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
@@ -46,9 +48,7 @@ prompt_git() {
 			fi;
 
 			# Show status in relation to upstream, sets the local variable p.
-			# Taken from git's example prompt, see /usr/local/etc/bash-completion.d/git-prompt.sh
-			local pcmode='no';
-			local GIT_PS1_SHOWUPSTREAM="verbose name git";
+			# Taken from git's bash completion scripts.
 			__git_ps1_show_upstream
 
 		fi;
