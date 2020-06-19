@@ -210,7 +210,7 @@ function server() {
 # (Requires PHP 5.4.0+.)
 function phpserver() {
 	local port="${1:-4000}";
-	local ip=$(ipconfig getifaddr en1);
+	local ip=$(ipconfig getifaddr en0);
 	sleep 1 && open "http://${ip}:${port}/" &
 	php -S "${ip}:${port}";
 }
@@ -346,4 +346,56 @@ function o() {
 # small enough for one screen.
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}
+
+# Extract audio from YouTube downloads.
+function yt-extract() {
+  if [ $# -eq 0 ] || [ ! -r "$1" ]; then
+    echo "Usage: yt-extract file [destination]";
+    return 1;
+  fi;
+
+  if [ -z "$2" ]; then
+    ffmpeg -i "$1" -vn -acodec copy "${1%.mp4}".m4a
+    return $?;
+  fi
+
+  if [ -d "$2" ]; then
+    ffmpeg -i "$1" -vn -acodec copy "${2%/}"/"${1%.mp4}".m4a
+    return $?;
+  fi
+
+  echo "$2 is not a directory";
+  return 1;
+}
+
+# 1. Remove containers in the current project
+# 2. Repeat on failure (network often fails to remove cleanly)
+# 3. Quit docker
+# 4. Start docker
+# 5. Wait for docker to be ready to start containers
+# 6. Bring up containers for current project and dettach.
+function docker-reboot() {
+  if [ "${COMPOSE_PROJECT_NAME}" ]; then
+    docker-compose down || docker-compose down
+  fi
+  osascript -e 'quit app "Docker"'
+  sleep 1
+  open --background -a Docker
+  if [ "${COMPOSE_PROJECT_NAME}" ]; then
+    # Docker-compose waits for docker to start, but the app takes a while to
+    # start the daemon. We used to have a reliable way to tell if it was ready
+    # but that broke.  Wait 10 seconds and then try twice seems to work.
+    sleep 10
+    docker-compose up -d || docker-compose up -d
+  fi
+}
+
+# If only a domain is specified, install certificate and key where Dinghy expects them.
+function mkcert() {
+  if [ $# -ne 1 ] || [ ${1:0:1} == "-" ]; then
+    command mkcert $@
+  else
+    command mkcert -cert-file ~/.dinghy/certs/"$1".crt -key-file ~/.dinghy/certs/"$1".key "$1"
+  fi
 }
