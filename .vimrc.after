@@ -1,0 +1,69 @@
+" Don't use Ex mode, use Q for formatting
+map Q gq
+
+" Spell in British English, save to our custom wordfile.
+set spelllang=en_gb
+set spellfile=~/.janus/local/spell/en.utf-8.add
+
+" Press F2 to toggle highlighting on/off, and show current value.
+:noremap <F2> :set hlsearch! hlsearch?<CR>
+
+" Customise and list mode. Use F3 to toggle.
+:set lcs=tab:>-,trail:.,extends:>,precedes:<
+:noremap <F3> :set list! list?<CR>
+
+" Fix backspace when using Prompt on iPhone
+":noremap <F6> :set t_kb= :fixdel
+
+"See http://www.vim.org/scripts/script.php?script_id=2352
+:map <F7> :exec WordProcessorOn()<CR>
+function WordProcessorOn()
+  set linebreak
+  set display+=lastline
+  setlocal wrap
+  setlocal nolist
+  setlocal spell spelllang=en_gb
+  nnoremap <buffer> j gj
+  nnoremap <buffer> k gk
+  nnoremap <buffer> $ g$
+  nnoremap <buffer> ^ g^
+  nnoremap <buffer> 0 g^
+  vnoremap <buffer> j gj
+  vnoremap <buffer> k gk
+  vnoremap <buffer> $ g$
+  vnoremap <buffer> ^ g^
+  vnoremap <buffer> 0 g^
+endfunction
+
+:map <F8> :exec WordProcessorOff()<CR>
+function WordProcessorOff()
+  set wrap<
+  set list<
+  set nospell
+  silent! nunmap <buffer> j
+  silent! nunmap <buffer> k
+  silent! nunmap <buffer> $
+  silent! nunmap <buffer> ^
+  silent! nunmap <buffer> 0
+  silent! vunmap <buffer> j
+  silent! vunmap <buffer> k
+  silent! vunmap <buffer> $
+  silent! vunmap <buffer> ^
+  silent! vunmap <buffer> 0
+endfunction
+
+" Write read-only files as root with two bangs.
+cmap w!! %!sudo tee > /dev/null %
+
+" Use Drupal coding standards in syntastic
+let g:syntastic_php_phpcs_args=' --report=csv --standard=Drupal --extensions=php,module,inc,install,test,profile,theme'
+
+" Only use pep8, not flake8 for python in syntastic
+let g:syntastic_python_checkers = ['python', 'pep8']
+
+" Get as close as we can to PHP markdown extra style tables in table-mode
+let g:table_mode_corner='|'
+
+" Ensure editorconfig plugin plays nicely with fugituve.
+" See https://github.com/editorconfig/editorconfig-vim
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
