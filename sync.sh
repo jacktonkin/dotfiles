@@ -29,7 +29,7 @@ if [[ "${BASH_SOURCE[0]}" = "$0" ]]; then
   cd "$(dirname "${BASH_SOURCE[0]}")"
   if output=$(git status --porcelain) && [ -z "$output" ]; then
     pushd "$HOME"
-    rsync --exclude ".DS_Store" -avh --no-perms --existing .[[:word:]]* bin "$(dirs -l +1)"
+    rsync --exclude ".DS_Store" --exclude ".Trash" -avh --no-perms --existing .[[:word:]]* bin "$(dirs -l +1)"
   else
     fatal "There are uncommited files in the working directory:
           $output

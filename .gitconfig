@@ -197,3 +197,5 @@
 
 	name = Jack Tonkin
 	email = jack@tonkin.org.uk
+[pull]
+	rebase = false
