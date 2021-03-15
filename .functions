@@ -399,3 +399,15 @@ function mkcert() {
     command mkcert -cert-file ~/.dinghy/certs/"$1".crt -key-file ~/.dinghy/certs/"$1".key "$1"
   fi
 }
+
+# Start a long-running ssh-agent in a docker container.
+function docker-ssh-agent () {
+  # See https://github.com/whilp/ssh-agent
+  # This runs as the webserver user and restarts each time docker is started.
+  docker run -u 33 --restart=always -d -v ssh:/ssh --name=ssh-agent whilp/ssh-agent:latest
+}
+
+# Add certificates to the long-running ssh-agent container.
+function docker-ssh-add () {
+  docker run -u 33 --rm -v ssh:/ssh -v $HOME:$HOME -it whilp/ssh-agent:latest ssh-add $@
+}
