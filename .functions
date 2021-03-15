@@ -411,3 +411,12 @@ function docker-ssh-agent () {
 function docker-ssh-add () {
   docker run -u 33 --rm -v ssh:/ssh -v $HOME:$HOME -it whilp/ssh-agent:latest ssh-add $@
 }
+
+# Perforce graphical merge/diff tool.
+function p4merge () {
+  if [ -f /Applications/p4merge.app/Contents/Resources/launchp4merge ]; then
+    /Applications/p4merge.app/Contents/Resources/launchp4merge "$@"
+  else
+    echo /Applications/p4merge.app was not found.
+  fi
+}
