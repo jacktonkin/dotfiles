@@ -9,6 +9,7 @@ function doIt() {
 		--exclude ".DS_Store" \
 		-avh --no-perms .[[:alpha:]]* bin ~;
 	source ~/.bash_profile;
+  cp LaunchAgents/*.plist ~/Library/LaunchAgents/;
 }
 
 if [ "$1" == "--force" -o "$1" == "-f" ]; then
