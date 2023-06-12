@@ -143,6 +143,7 @@
 	# Enable an experimental heuristic that shifts the hunk boundary in an
 	# attempt to make the resulting patch easier to read.
 	indentHeuristic = true
+	tool = p4merge
 
 [diff "bin"]
 
@@ -163,6 +164,7 @@
 
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
+	tool = p4merge
 
 [push]
 
@@ -199,3 +201,5 @@
 	email = jack@tonkin.org.uk
 [pull]
 	rebase = false
+[mergetool]
+	keepBackup = false
