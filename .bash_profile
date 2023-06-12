@@ -53,6 +53,3 @@ source /usr/local/bin/virtualenvwrapper_lazy.sh
 # Next Action script: https://github.com/ttscoff/na
 [[ -s "$HOME/Scripts/na.sh" ]] && source "$HOME/Scripts/na.sh"
 
-# Automatically added by the Platform.sh CLI
-export PATH="/Users/jack/.platformsh/bin:$PATH"
-. '/Users/jack/.platformsh/shell-config.rc' 2>/dev/null
