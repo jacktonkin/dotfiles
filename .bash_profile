@@ -53,3 +53,5 @@ source /usr/local/bin/virtualenvwrapper_lazy.sh
 # Next Action script: https://github.com/ttscoff/na
 [[ -s "$HOME/Scripts/na.sh" ]] && source "$HOME/Scripts/na.sh"
 
+# Direnv hook.
+eval "$(direnv hook bash)"
