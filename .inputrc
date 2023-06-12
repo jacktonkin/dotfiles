@@ -38,3 +38,13 @@ set convert-meta off
 
 # Use Alt/Meta + Delete to delete the preceding word
 "\e[3;3~": kill-word
+
+# Poor man's zsh-style menu completion when combined with show-all-if-ambiguous
+# https://unix.stackexchange.com/a/447638/191530
+
+# Cycle through completions with TAB and shift-TAB
+"\t": menu-complete
+"\e[Z": menu-complete-backward
+
+# Show the common prefix (and ring the bell) on first tab; then cycle
+set menu-complete-display-prefix on
