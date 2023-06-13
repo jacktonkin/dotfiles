@@ -48,13 +48,13 @@ complete -W "NSGlobalDomain" defaults;
 complete -o "nospace" -W "Contacts Calendar Dock Finder Mail Safari iTunes SystemUIServer Terminal Twitter" killall;
 
 # Lazy-load python virtual environment wrapper commands.
-source /usr/local/bin/virtualenvwrapper_lazy.sh
+command -v virtualenvwrapper_lazy.sh >/dev/null && source virtualenvwrapper_lazy.sh
 
 # Next Action script: https://github.com/ttscoff/na
 [[ -s "$HOME/Scripts/na.sh" ]] && source "$HOME/Scripts/na.sh"
 
 # Direnv hook.
-eval "$(direnv hook bash)"
+command -v direnv >/dev/null && eval "$(direnv hook bash)"
 
 # Load nvm and bash completion.
 export NVM_DIR="$HOME/.nvm"
