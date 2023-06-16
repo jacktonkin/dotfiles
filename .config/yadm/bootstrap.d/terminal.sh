@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Taken from the macos setup script in mathiasbynens/dotfiles
 
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+if [ "$(uname -s)" != "Darwin" ]; then
+  return 2>/dev/null || exit
+fi
 
 # Only use UTF-8 in Terminal.app
 defaults write com.apple.terminal StringEncodings -array 4
@@ -22,7 +24,7 @@ tell application "Terminal"
 	(* Open the custom theme so that it gets added to the list
 	   of available terminal themes (note: this will open two
 	   additional terminal windows). *)
-	do shell script "open '$SCRIPTPATH/init/" & themeName & ".terminal'"
+	do shell script "open ~/.config/yadm/'" & themeName & ".terminal'"
 
 	(* Wait a little bit to ensure that the custom theme is added. *)
 	delay 1
