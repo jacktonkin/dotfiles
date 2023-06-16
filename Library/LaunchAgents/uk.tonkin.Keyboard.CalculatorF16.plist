@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.local.KeyRemapping</string>
+    <string>uk.tonkin.Keyboard.CalculatorF16</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/hidutil</string>
