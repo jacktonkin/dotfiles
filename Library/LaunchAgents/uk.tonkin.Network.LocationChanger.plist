@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>uk.tonkin.Network.LocationChanger</string>
+    <key>LowPriorityIO</key>
+    <true/>
+    <key>ProgramArguments</key>
+    <!-- Source script from a bash shell so we can use tilde expansion.-->
+    <array>
+      <string>/bin/bash</string>
+      <string>-c</string>
+      <string>source ~/.local/libexec/change-network-location</string>
+    </array>
+    <key>WatchPaths</key>
+    <array>
+      <string>/Library/Preferences/SystemConfiguration/com.apple.wifi.message-tracer.plist</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+  </dict>
+</plist>

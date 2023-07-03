@@ -1,0 +1,23 @@
+#!/bin/bash
+# Use the 'Home' network location when connected to my home Wifi; use the
+# 'Automatic' location otherwise.
+CURRENT_LOCATION="$(networksetup -getcurrentlocation)"
+
+# Get the SSID of the connected Wifi network.
+case "$(networksetup -getairportnetwork en0 | awk '{print $NF}')" in
+  VM9908594)
+    NEW_LOCATION=Home
+    ;;
+  *)
+    NEW_LOCATION=Automatic
+    ;;
+esac
+
+if [ "$CURRENT_LOCATION" != "$NEW_LOCATION" ]; then
+  # Use `scselect` instead of `networksetup -setlocation` because it can still
+  # be run as a regular user in Ventura.
+  /usr/sbin/scselect "$NEW_LOCATION"
+  /usr/bin/osascript -e "display notification \"Network Location changed to $NEW_LOCATION\" with title \"Network Update\""
+else
+  /usr/bin/osascript -e "display notification \"Network Location unchanged as $NEW_LOCATION\" with title \"Network Update\""
+fi
