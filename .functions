@@ -411,3 +411,81 @@ function docker-ssh-agent () {
 function docker-ssh-add () {
   docker run -u 33 --rm -v ssh:/ssh -v $HOME:$HOME -it whilp/ssh-agent:latest ssh-add $@
 }
+
+# Wrapper for Bitwarden CLI.
+# Use to save a session key and then login with sudo/Touch ID.
+# See https://gist.github.com/mietzen/f383d87c0973c1af877b39e09b50021e
+function bw () {
+  local -r bw_session_file='/var/root/.bitwarden.session'
+
+  function __bw__status() {
+    command bw status --session "$BW_SESSION" | jq --raw-output .status
+  }
+
+  function __bw__save_token() {
+    sudo -k bash -c "printf '%s' '$BW_SESSION' > '$bw_session_file'"
+  }
+
+  function __bw__unlock() {
+    BW_SESSION="$(command bw unlock --raw)"
+  }
+
+
+ function __bw__logout() {
+    command bw logout 2>/dev/null
+ }
+
+  case "$@" in
+  '--regenerate-session-key')
+    echo "Regenerating session key, this has invalidated all existing sessions..."
+    # Invalidate all existing sessions and generate new session key
+    __bw__logout
+    BW_SESSION="$(command bw login "$BW_USER" --raw)"
+    __bw__save_token
+    ;;
+
+  '--help'|'-h')
+    command bw "$@"
+    echo "To regenerate your session key type:"
+    echo "  bw --regenerate-session-key"
+    ;;
+
+  'lock'|'logout')
+    command bw "$@"
+    ;;
+
+  'unlock')
+    __bw__unlock
+    ;;
+
+  'unlock --save')
+    __bw__unlock && __bw__save_token
+    ;;
+
+  '--save')
+    __bw__save_token
+    ;;
+
+  *)
+    if [ "$(__bw__status)" = 'unauthenticated' ]; then
+      echo "Token not found, please run bw --regenerate-session-key"
+      return 1
+    fi
+
+    if [ -z "$BW_SESSION" ]; then
+      BW_SESSION="$(sudo -k cat "$bw_session_file" 2> /dev/null)" || {
+        echo "Token not found, please run bw --regenerate-session-key"
+        __bw__logout
+        return 1
+      }
+    fi
+
+    if [ "$(__bw__status)" = 'locked' ]; then
+      echo "Expired token found, please run 'bw unlock --save'"
+      return 1
+    fi
+
+    command bw "$@" --session "$BW_SESSION"
+    ;;
+  esac
+}
