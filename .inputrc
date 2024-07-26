@@ -48,3 +48,148 @@ set convert-meta off
 
 # Show the common prefix (and ring the bell) on first tab; then cycle
 set menu-complete-display-prefix on
+
+# Turn on vi mode; see:
+# - Readline Cheat Sheet: https://readline.kablamo.org/vi.html
+# - Vi experience in the shell: https://deut-erium.github.io/2024/01/28/inputrc.html
+set editing-mode vi
+
+# Show the vi mode in the prompt (command or insert)
+set show-mode-in-prompt on
+
+# Set the cursor to indicate the vi mode:
+# - For the number after `\e[`:
+#     0: Blinking block
+#     1: Blinking block (default)
+#     2: Steady block
+#     3: Blinking underline
+#     4: Steady underline
+#     5: Blinking bar (xterm)
+#     6: Steady bar (xterm)
+
+# Blinking bar for insert mode.
+set vi-ins-mode-string "\1\e[5 q\2"
+# Solid block for command mode.
+set vi-cmd-mode-string "\1\e[2 q\2"
+
+# Set keys for vi command mode.
+set keymap vi-command
+  # I can't live without these emacs-style defaults.
+  "\C-a": beginning-of-line
+  "\C-e": end-of-line
+  "\C-x\C-r": re-read-init-file
+  # Or Mac-style option left/right.
+  "\eb": backward-word
+  "\ef": forward-word
+  # And backspace.
+  Rubout: backward-char
+
+  # Delete/change/yank with 'aw' and 'iw' motions.
+  "daw": "lbdW"
+  "yaw": "lbyW"
+  "caw": "lbcW"
+  "diw": "lbdw"
+  "yiw": "lbyw"
+  "ciw": "lbcw"
+
+  # Delete/change between pairs of characters. Note that these commands work
+  # with the cursor on the opening delimiter, but not the closing one.
+  # See http://www.usenix.org.uk/content/bash.html#input
+
+  # Delete around double quoted string:
+  # - Search backward for a double quote, then delete to the next double quote.
+  "da\"": "lF\"df\""
+
+  # Delete inside double quoted string:
+  # - Mark the character after the first quote, find the character before the
+  #   last quote and delete back to the mark.
+  "di\"": "lF\"lmtf\"d`t"
+  # Change inside/around double quoted string:
+  # - Delete inside/around double quoted string and go into insert mode.
+  "ci\"": "di\"i"
+  "ca\"": "da\"i"
+
+  # Delete/change around/inside single quoted string
+  "da'": "lF'df'"
+  "di'": "lF'lmtf'd`t"
+  "ci'": "di'i"
+  "ca'": "da'i"
+
+  # Delete/change around/inside tilde
+  "da`": "lF\`df\`"
+  "di`": "lF\`lmtf\`d`t"
+  "ci`": "di`i"
+  "ca`": "da`i"
+
+  # Delete/change around/inside parenthesis
+  "da(": "lF(df)"
+  "di(": "lF(lmtf)d`t"
+  "ci(": "di(i"
+  "ca(": "da(i"
+  "da)": "lF(df)"
+  "di)": "lF(lmtf)d`t"
+  "ci)": "di(i"
+  "ca)": "da(i"
+
+  # Delete/change around/inside curly
+  "da{": "lF{df}"
+  "di{": "lF{lmtf}d`t"
+  "ci{": "di{i"
+  "ca{": "da{i"
+  "da}": "lF{df}"
+  "di}": "lF{lmtf}d`t"
+  "ci}": "di}i"
+  "ca}": "da}i"
+
+  # Delete/change around/inside square brackets
+  "da[": "lF[df]"
+  "di[": "lF[lmtf]d`t"
+  "ci[": "di[i"
+  "ca[": "da[i"
+  "da]": "lF[df]"
+  "di]": "lF[lmtf]d`t"
+  "ci]": "di]i"
+  "ca]": "da]i"
+
+  # Delete/change around/inside angled brackets
+  "da<": "lF<df>"
+  "di<": "lF<lmtf>d`t"
+  "ci<": "di<i"
+  "ca<": "da<i"
+  "da>": "lF<df>"
+  "di>": "lF<lmtf>d`t"
+  "ci>": "di>i"
+  "ca>": "da>i"
+
+  # Delete/change around/inside forward slash
+  "da/": "lF/df/"
+  "di/": "lF/lmtf/d`t"
+  "ci/": "di/i"
+  "ca/": "da/i"
+
+  # Delete/change around/inside colon
+  "da:": "lF:df:"
+  "di:": "lF:lmtf:d`t"
+  "ci:": "di:i"
+  "ca:": "da:i"
+
+  # Vi-inspired history navigation.
+  "gg": beginning-of-history
+  "G": end-of-history
+  "?": reverse-search-history
+  "/": forward-search-history
+
+# Set keys for vi insert mode.
+set keymap vi-insert
+  # I can't live without these emacs-style defaults.
+  "\C-a": beginning-of-line
+  "\C-e": end-of-line
+  "\C-k": kill-line
+  # Or Mac-style option left/right.
+  "\eb": backward-word
+  "\ef": forward-word
+  # Re-set some bindings for this keymap.
+  "\e[A": history-search-backward
+  "\e[B": history-search-forward
+  "\t": menu-complete
+  "\e[Z": menu-complete-backward
