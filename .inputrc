@@ -59,8 +59,8 @@ set show-mode-in-prompt on
 
 # Set the cursor to indicate the vi mode:
 # - For the number after `\e[`:
-#     0: Blinking block
-#     1: Blinking block (default)
+#     0: Terminal default
+#     1: Blinking block
 #     2: Steady block
 #     3: Blinking underline
 #     4: Steady underline
