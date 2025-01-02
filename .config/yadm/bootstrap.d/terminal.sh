@@ -9,6 +9,7 @@ fi
 defaults write com.apple.terminal StringEncodings -array 4
 
 # Use a modified version of the Solarized Dark theme by default in Terminal.app
+# Theme from https://github.com/lysyi3m/macos-terminal-themes
 osascript <<EOD
 
 tell application "Terminal"
@@ -16,7 +17,7 @@ tell application "Terminal"
 	local allOpenedWindows
 	local initialOpenedWindows
 	local windowID
-	set themeName to "Solarized Dark"
+	set themeName to "Solarized Dark Higher Contrast"
 
 	(* Store the IDs of all the open terminal windows. *)
 	set initialOpenedWindows to id of every window
