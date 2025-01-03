@@ -2,9 +2,12 @@
 # Use the 'Home' network location when connected to my home Wifi; use the
 # 'Automatic' location otherwise.
 CURRENT_LOCATION="$(networksetup -getcurrentlocation)"
+DEVICE="$(networksetup -listallhardwareports | awk '/Wi-Fi/{getline; print $NF}')"
 
 # Get the SSID of the connected Wifi network.
-case "$(networksetup -getairportnetwork en0 | awk '{print $NF}')" in
+# Note that `networksetup -getairportnetwork "$DEVICE"` is broken in Sequoia.
+# https://apple.stackexchange.com/q/475370
+case "$(ipconfig getsummary "$DEVICE" | awk '/  SSID : /{print $NF}')" in
   VM9908594)
     NEW_LOCATION=Home
     ;;
