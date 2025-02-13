@@ -489,3 +489,10 @@ function bw () {
     ;;
   esac
 }
+
+# PhpStorm CLI wrapper.
+#
+# See https://www.jetbrains.com/help/phpstorm/working-with-the-ide-features-from-command-line.html
+function phpstorm () {
+  open -na "PhpStorm.app" --args "$@"
+}
