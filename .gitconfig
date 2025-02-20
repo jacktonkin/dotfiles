@@ -207,7 +207,6 @@
 	defaultBranch = main
 [commit]
 	gpgsign = false
-	template = /Users/jack/Library/Application Support/com.fournova.Tower3/Commit Templates/DB11719E-5B78-485E-B8AE-C979748479A3
 [credential]
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
