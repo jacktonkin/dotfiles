@@ -7,8 +7,11 @@ if [ "$system_type" = "Darwin" ]; then
   osascript -e 'tell application "System Preferences" to quit'
 
   # Load the uk.tonkin.Keyboard.CalculatorF16 launch agent if not already
-  # loaded. This uses `hidutil` to remap the calculator key to F16. See
-  # https://apple.stackexchange.com/a/414903
+  # loaded. This uses `hidutil` to remap keys as follows:
+  # 1. Calculator to F16 (see https://apple.stackexchange.com/a/414903)
+  # 2. F22 to Dictation
+  # 3. F23 to Do not Disturb
+  # 4. F24 to Globe
   if ! launchctl list uk.tonkin.Keyboard.CalculatorF16 2> /dev/null; then
     launchctl load -F ~/Library/LaunchAgents/uk.tonkin.Keyboard.CalculatorF16.plist
   fi
